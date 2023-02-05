@@ -1,0 +1,50 @@
+#端口号
+server:
+  port: 8080
+
+#数据源
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/store?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  mvc:
+    view:
+      prefix: /web/
+      suffix: .html
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+#文件上传配置
+  servlet:
+    multipart:
+      enabled: true #默认为true
+      max-request-size: 100MB #最大请求文件的大小
+      max-file-size: 20MB #设置单个文件最大长度
+      file-size-threshold: 20MB #当文件达到多少时进行磁盘写入
+
+# mp日志
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+    #开启数据库字段自动转换为驼峰命名
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.wsf.huanbaobao.entity
+
+#配置分页插件
+pagehelper:
+  dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+#自定义数据
+user:
+  address:
+    max-count: 20
+#引入log4j2.yml配置
+logging:
+  config: classpath:log4j2.yml

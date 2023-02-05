@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wsf.huanbaobao.mapper.FavoritesMapper">
+
+    <!--新增收藏商品-->
+    <insert id="addFavorites">
+        insert into t_favorites(uid,pid,image,price,title,sell_point,status)
+					values(#{uid},#{pid},#{image},#{price},#{title},#{sellPoint},#{status})
+    </insert>
+
+    <!--根据收藏商品pid和用户uid取消对应商品收藏-->
+    <update id="updateFavoritesStatus">
+        update t_favorites set status = #{status} where fid = #{fid} and uid = #{uid}
+    </update>
+
+    <!--根据uid和收藏商品状态查询收藏的商品信息-->
+    <select id="findFavoritesByUidAndStatus" resultType="Favorites">
+        select * from t_favorites where uid= #{uid} and status = #{status}
+    </select>
+</mapper>

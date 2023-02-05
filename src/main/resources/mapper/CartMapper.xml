@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wsf.huanbaobao.mapper.CartMapper">
+    <!--添加购物车-->
+    <insert id="addCart">
+        insert into t_cart(uid, pid, price, num, created_user,created_time,modified_user,modified_time)
+        values (#{uid},#{pid},#{price},#{num},
+                #{createdUser},#{createdTime},
+                #{modifiedUser},#{modifiedTime})
+    </insert>
+
+    <!--更新购物车信息-->
+    <update id="updateNumByCid">
+        update t_cart set num=#{num},modified_user=#{modifiedUser},modified_time=#{modifiedTime}
+        where cid=#{cid}
+    </update>
+    <!--更新购物车数据-->
+    <update id="updateCartInfo">
+        update t_cart set num = #{num},modified_user = #{modifiedUser},modified_time = #{modifiedTime}
+                          where cid = #{cid}
+    </update>
+
+    <!--根据cid删除指定商品-->
+    <delete id="deleteCartByCid">
+        delete from t_cart where cid = #{cid}
+    </delete>
+
+    <!--根据uid和pid删除对应的t_cart表中的数据-->
+    <delete id="deleteCartByUidAndPid">
+        DELETE FROM t_cart WHERE uid = #{uid} AND pid = #{pid}
+    </delete>
+
+    <!--根据uid和pid查询某条购物车数据-->
+    <select id="findCartByUidAndPid" resultType="Cart">
+        select * from t_cart where uid = #{uid} and pid = #{pid}
+    </select>
+
+    <!--根据uid查询用户购物车信息-->
+    <select id="selectAllCartsByUid" resultType="com.wsf.huanbaobao.vo.CartVo">
+        SELECT c.cid,c.pid,c.`uid`,c.price,c.num,p.title,p.image,p.`price` AS real_price
+                                                FROM t_cart c LEFT JOIN t_product p
+                                                ON c.pid = p.`id`
+                                                WHERE c.`uid` = #{uid}
+                                                order by c.created_time desc
+    </select>
+
+    <!--根据cid查询用户cart信息-->
+    <select id="findCartByCid" resultType="Cart">
+        select * from t_cart where cid = #{cid}
+    </select>
+
+    <!--根据cid查询返回CartVo对象-->
+    <select id="selectCartVoByCid" resultType="com.wsf.huanbaobao.vo.CartVo">
+        SELECT c.cid,c.pid,c.`uid`,c.price,c.num,p.title,p.image,p.`price` AS real_price
+                                                FROM t_cart c LEFT JOIN t_product p
+                                                ON c.pid = p.`id`
+                                                WHERE c.`cid` = #{cid}
+                                                order by c.created_time desc
+    </select>
+</mapper>
