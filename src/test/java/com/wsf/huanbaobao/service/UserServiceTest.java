@@ -4,6 +4,7 @@ import com.wsf.huanbaobao.entity.Product;
 import com.wsf.huanbaobao.entity.User;
 import com.wsf.huanbaobao.mapper.ProductMapper;
 import com.wsf.huanbaobao.mapper.UserMapper;
+import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,5 +80,21 @@ public class UserServiceTest {
     public void test1() {
         List<Product> products = productMapper.queryProductByTitle("日程");
         System.out.println(products.toString());
+    }
+
+    @Test
+    public void test() {
+        List<Integer> list = Lists.newArrayList();
+        list.add(1);
+        list.add(2);
+        list.add(2);
+        list.add(2);
+        list.add(2);
+        for(int i=list.size()-1;i>=0;i--){
+            if(list.get(i)==2){
+                list.remove(i);
+                System.out.println("集合："+list+"数量："+i);
+            }
+        }
     }
 }
