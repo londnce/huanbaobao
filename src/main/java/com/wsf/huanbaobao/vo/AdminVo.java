@@ -11,5 +11,6 @@ public class AdminVo {
     private String adminName;
     private String adminPw;
     private String email;
+    private String role;
     private String token;
 }

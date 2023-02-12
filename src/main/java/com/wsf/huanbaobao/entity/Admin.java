@@ -20,4 +20,5 @@ public class Admin {
     private String adminName;
     private String adminPw;
     private String email;
+    private String role;
 }
