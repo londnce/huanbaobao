@@ -7,55 +7,96 @@ import com.wsf.huanbaobao.service.ProductCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMapper, ProductCategory> implements ProductCategoryService {
     @Autowired
     private ProductCategoryMapper categoryMapper;
 
-    //@Override
-    ///**
-    // * java8新特性
-    // * sorted 方法用于对流进行排序。以下代码片段使用 sorted 方法对输出的 10 个随机数进行排序：
-    // * Collectors
-    // Collectors 类实现了很多归约操作，例如将流转换成集合和聚合元素。Collectors 可用于返回列表或字符串：
-    // filter
-    // filter 方法用于通过设置的条件过滤出元素。以下代码片段使用 filter 方法过滤出空字符串：
-    // */
-    //public List<ProductCategory> listWithTree() {
-    //    //1：查出所有分类
-    //    List<ProductCategory> lists = categoryMapper.selectList(null);
-    //
-    //    //2：组装成父子的树形结构
-    //    List<ProductCategory> level1Menu = lists.stream().filter( productCategory ->
-    //            productCategory.getParentId() == 0
-    //    ).map( (menu) -> {
-    //        menu.setChildren(getChildren(menu,lists));
-    //        return menu;
-    //    }).sorted(Comparator.comparingInt(menu -> (menu.getSortOrder() == null ? 0 : menu.getSortOrder()))).collect(Collectors.toList());
-    //    return level1Menu;
-    //}
-    //
-    ///**
-    // * 所有的子菜单在哪里，我们可以写一个递归的方法，来找到每一个菜单的子菜单
-    // * 我们写一个方法：获取某一个菜单的子菜单，（递归查找所有一级菜单的子菜单）
-    // */
-    //private List<ProductCategory> getChildren(ProductCategory root,List<ProductCategory> all){
-    //    /*
-    //     * collect整个菜单就是我们要用的子菜单，但是每个子菜单还是会有可有子菜单
-    //     */
-    //    List<ProductCategory> children = all.stream().filter(productCategory -> {
-    //        //让当前菜单（ProductCategory）的parentid等于我们指定菜单（root）的id,说明当前菜单就是它的子菜单
-    //        return productCategory.getParentId() == root.getId();
-    //    }).map(productCategory->{
-    //        //1：继续找到子菜单
-    //        productCategory.setChildren(getChildren(productCategory,all));
-    //        return productCategory;
-    //    }).sorted(Comparator.comparingInt(menu -> (menu.getSortOrder() == null ? 0 : menu.getSortOrder()))).collect(Collectors.toList());
-    //    return children;
-    //}
+    /**
+     * 查询所有分类
+     * @return 分类列表
+     */
+    @Override
+    public List<ProductCategory> findAll() {
+        List<ProductCategory> categories = categoryMapper.listByLevel(1);
+        for (ProductCategory category : categories) {
+            List<ProductCategory> list = categoryMapper.listByParentId(category.getId());  // 获取当前一级分类的所有子分类
+            if (list != null && !list.isEmpty()) {
+                category.setChildren(list); // 将子分类放入当前一级分类的children中
+                for (ProductCategory childCategory : list) {
+                    List<ProductCategory> grandChildCategoryList = categoryMapper.listByParentId(childCategory.getId()); // 获取当前二级分类的所有子分类
+                    if (grandChildCategoryList != null && !grandChildCategoryList.isEmpty()) {
+                        childCategory.setChildren(grandChildCategoryList); // 将子分类放入当前二级分类的children中
+                    }
+                }
+            }
+        }
+        return categories;
+    }
+
+    /**
+     * 根据ID查询分类
+     * @param id 分类ID
+     * @return 分类实体
+     */
+    @Override
+    public ProductCategory findById(int id) {
+        return categoryMapper.findById(id);
+    }
+
+    /**
+     * 添加分类
+     * @param category 分类实体
+     * @return 添加成功数量
+     */
+    @Override
+    public int add(ProductCategory category) {
+        return categoryMapper.add(category);
+    }
+
+    /**
+     * 更新分类
+     * @param category 分类实体
+     * @return 更新成功数量
+     */
+    @Override
+    public int update(ProductCategory category) {
+        category.setModifiedTime(new Date());
+        return categoryMapper.updateById(category);
+    }
+
+    /**
+     * 根据父id查询分类
+     * @param parentId 父分类id
+     * @return 分类列表
+     */
+    @Override
+    public List<ProductCategory> listByParentId(Integer parentId) {
+        return categoryMapper.listByParentId(parentId);
+    }
+
+    /**
+     * 查询分类等级
+     * @return  分类等级列表
+     */
+    @Override
+    public List<ProductCategory> getLevelCategories(Integer level) {
+        return categoryMapper.listByLevel(level);
+    }
+
+    /**
+     * 根据分类等级和父分类ID查询相应的子分类
+     * @param level 分类等级
+     * @param parentId 父id
+     * @return 分类列表
+     */
+    @Override
+    public List<ProductCategory> getChildCategories(Integer level, Integer parentId) {
+        return categoryMapper.selectByLevelAndParentId(level, parentId);
+    }
+
 
 }

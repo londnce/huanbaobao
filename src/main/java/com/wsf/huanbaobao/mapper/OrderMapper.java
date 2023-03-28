@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.wsf.huanbaobao.entity.Order;
 import com.wsf.huanbaobao.entity.OrderItem;
 import com.wsf.huanbaobao.vo.OrderVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -63,4 +64,9 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @return
      */
     List<OrderVo> queryOrderVoByUid(Integer uid, Integer status);
+
+    /**
+     * 查询所有订单信息
+     */
+    List<OrderVo> selectAll(String recvName);
 }

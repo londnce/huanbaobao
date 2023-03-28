@@ -14,9 +14,9 @@ public class AlipayConfig {
     //支付宝公钥
     public static String alipayPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAj98bEMZtwlyihxAp+sq9sAj9g35m+hBm5AmqfSqXqN3zxV0g1F/L4Dg+pUCfCx71nLFZHrZ80RGh1ge4rBQ8kUW0VvRE4xLfL9+xr3fMVd9GCq6kYhV2OLmS2MZwv0z9Wf1WbHQFs+398syxjRNtpDeANkogXbhxwiYyuYtuq8vzjOwTgEGUeLZmVaFstUIW3Dn+gJ0AR5HTvfCU4szUvmvfsbZpdOCC+jpEQUOJHwsoNawwuzf0qec0HPInRXRVB++kZXQkDRvYZZ4155sW3JrqOKi24Gv4s0z4hMHwNwrLGbhXiQc65UW0or1KFLSwk4nFexVImKSSrPpLnjcXYwIDAQAB";
     //异步回调地址
-    public static String notifyUrl = "http://k9fytn.natappfree.cc/alipay/notifyNotice";
+    public static String notifyUrl = "http://3r5arf.natappfree.cc/alipay/notifyNotice";
     //同步回调地址
-    public static String returnUrl = "http://k9fytn.natappfree.cc/alipay/returnNotice";
+    public static String returnUrl = "http://3r5arf.natappfree.cc/alipay/returnNotice";
     //推荐使用这个秘钥
     public static String signType = "RSA2";
     //使用的编码格式

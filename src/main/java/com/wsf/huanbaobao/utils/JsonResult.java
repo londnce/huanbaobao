@@ -33,4 +33,9 @@ public class JsonResult<T> implements Serializable {
         this.data = data;
     }
 
+    public JsonResult(Integer status,String  message){
+        this.status = status;
+        this.message = message;
+    }
+
 }

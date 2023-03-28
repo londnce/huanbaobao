@@ -3,41 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wsf.huanbaobao.mapper.OrderMapper">
-<!--    定义自定义的映射规则-->
-    <!--        <resultMap id="queryOrder" type="order">-->
-    <!--            <id property="oid" column="oid"/>-->
-    <!--            <result property="uid" column="uid"/>-->
-    <!--            <result property="aid" column="aid"/>-->
-    <!--            <result property="recvName" column="recv_name"/>-->
-    <!--            <result property="recvPhone" column="recv_phone"/>-->
-    <!--            <result property="recvProvince" column="recv_province"/>-->
-    <!--            <result property="recvCity" column="recv_city"/>-->
-    <!--            <result property="recvArea" column="recv_area"/>-->
-    <!--            <result property="recvAddress" column="recv_address"/>-->
-    <!--            <result property="totalPrice" column="total_price"/>-->
-    <!--            <result property="status" column="status"/>-->
-    <!--            <result property="orderTime" column="order_time"/>-->
-    <!--            <result property="payTime" column="pay_time"/>-->
-    <!--            <result property="createdUser" column="created_user"/>-->
-    <!--            <result property="createdTime" column="created_time"/>-->
-    <!--            <result property="modifiedUser" column="modified_user"/>-->
-    <!--            <result property="modifiedTime" column="modified_time"/>-->
-    <!--        </resultMap>-->
-
-    <!--        <resultMap id="queryOrderItem" type="orderItem">-->
-    <!--            <id property="id" column="id"/>-->
-    <!--            <result property="oid" column="oid"/>-->
-    <!--            <result property="pid" column="pid"/>-->
-    <!--            <result property="title" column="title"/>-->
-    <!--            <result property="image" column="image"/>-->
-    <!--            <result property="price" column="price"/>-->
-    <!--            <result property="num" column="num"/>-->
-    <!--            <result property="createdUser" column="created_user"/>-->
-    <!--            <result property="createdTime" column="created_time"/>-->
-    <!--            <result property="modifiedUser" column="modified_user"/>-->
-    <!--            <result property="modifiedTime" column="modified_time"/>-->
-    <!--        </resultMap>-->
-
     <!--int insertOneOrder(Order order);-->
     <!--插入一条order订单数据-->
     <insert id="insertOneOrder" useGeneratedKeys="true" keyProperty="oid">
@@ -111,5 +76,17 @@
             and od.status = #{status}
         </if>
         ORDER BY od.`order_time` DESC;
+    </select>
+
+    <!--查询订单信息-->
+    <select id="selectAll" resultType="com.wsf.huanbaobao.vo.OrderVo">
+        select od.`recv_name` as recvName, od.`status`, od.`order_time` AS orderTime,
+        orm.`title`, od.`recv_phone` as phone, od.`recv_province` as provinceName,
+        od.`recv_city` as cityName, od.`recv_address` as address
+        from t_order od
+        LEFT JOIN t_order_item orm
+        ON od.`oid` = orm.`oid`
+        where od.`recv_name` LIKE '%${recvName}%'
+        ORDER BY orderTime ASC
     </select>
 </mapper>

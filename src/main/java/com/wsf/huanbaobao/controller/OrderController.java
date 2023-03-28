@@ -101,7 +101,6 @@ public class OrderController extends BaseController{
     @GetMapping("/queryOrderVo")
     public JsonResult<List<OrderVo>>  queryOrderVo(Integer oid){
         List<OrderVo> orderVos = orderService.queryOrderVoByOid(oid);
-
         return new JsonResult<>(OK,orderVos);
     }
 

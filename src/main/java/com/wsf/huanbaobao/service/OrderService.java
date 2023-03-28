@@ -1,9 +1,11 @@
 package com.wsf.huanbaobao.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.pagehelper.PageInfo;
 import com.wsf.huanbaobao.entity.Order;
 import com.wsf.huanbaobao.entity.OrderItem;
 import com.wsf.huanbaobao.vo.OrderVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -36,5 +38,6 @@ public interface OrderService extends IService<Order> {
     //根据用户uid查询订单
     List<OrderVo> queryOrderVoByUid(Integer uid, Integer status);
 
-
+    //查询所有订单信息
+    PageInfo<OrderVo> findAll(Integer pageNum,Integer pageSize,String recvName);
 }

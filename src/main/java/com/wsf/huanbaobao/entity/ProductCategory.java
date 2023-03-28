@@ -25,6 +25,6 @@ public class ProductCategory extends BaseEntity{
     private Integer sortOrder;
     private Integer isParent;
     private Integer level;
-    //@TableField(exist = false)
-    //private List<ProductCategory> children;
+    @TableField(exist = false)
+    private List<ProductCategory> children;
 }

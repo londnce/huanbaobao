@@ -1,6 +1,8 @@
 package com.wsf.huanbaobao.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.wsf.huanbaobao.entity.*;
 import com.wsf.huanbaobao.mapper.OrderMapper;
 import com.wsf.huanbaobao.service.AddressService;
@@ -11,6 +13,7 @@ import com.wsf.huanbaobao.service.ex.InsertException;
 import com.wsf.huanbaobao.service.ex.OrderNotExistsException;
 import com.wsf.huanbaobao.service.ex.UpdateException;
 import com.wsf.huanbaobao.vo.OrderVo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -119,7 +122,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper,Order> implements 
         }
         return result;
     }
-
 
     /**
      * 根据从商品界面进入创建orderItem订单
@@ -267,6 +269,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper,Order> implements 
             throw new OrderNotExistsException("查询订单为空");
         }
         return orderVos;
+    }
+
+    /**
+     * 查询所有订单信息
+     * @return 分页列表
+     */
+    @Override
+    public PageInfo<OrderVo> findAll(Integer pageNum,Integer pageSize,String recvName) {
+        //开启分页
+        PageHelper.startPage(pageNum,pageSize);
+        List<OrderVo> all = orderMapper.selectAll(recvName);
+        PageInfo<OrderVo> pageInfo = new PageInfo<>(all);
+        return pageInfo;
     }
 
 }

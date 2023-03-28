@@ -15,6 +15,9 @@ public class BaseController {
     /** 操作成功的状态码 */
     public static final int OK = 200;
 
+    /** 操作失败的状态码 */
+    public static final int Error = 400;
+
     /**
      * 从HttpSession对象中获取uid
      * @param session HttpSession对象
@@ -91,6 +94,8 @@ public class BaseController {
             result.setStatus(1001); //表示验证码错误
         }else if (e instanceof OrderNotExistsException) {
             result.setStatus(3000); //表示查询的order数据不存在
+        }else if (e instanceof CateException) {
+            result.setStatus(3001); //表示查询的分类数据失败
         }
         return result;
     }
